@@ -8,4 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Formateur extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'user_id',
+        'specialite',
+        'nom',
+        'prenom',
+        'email',
+        'password'
+    ];
+    public function matieres() {
+        return $this->belongsToMany(Matiere::class);
+    }
+
+    public function espaces() {
+        return $this->hasMany(Espace::class);
+    }
 }
