@@ -52,7 +52,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="nom" class="form-label">Nom *</label>
                                     <input type="text" class="form-control" id="nom" name="nom" required>
-                                </div>
+                                </div> 
                                 <div class="col-md-6 mb-3">
                                     <label for="prenom" class="form-label">Prénom *</label>
                                     <input type="text" class="form-control" id="prenom" name="prenom" required>
