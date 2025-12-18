@@ -21,11 +21,11 @@ use Illuminate\Notifications\Notifiable;
 
 // Permet l'authentification via API (tokens, Sanctum)
 use Laravel\Sanctum\HasApiTokens;
-
-/**
- * Classe User : représente la table "users" dans la base de données
- * Elle étend Authenticatable car les utilisateurs peuvent se connecter
- */
+use App\Models\Etudiant;
+use App\Models\Administration;
+use App\Models\Formateur;
+use Filament\Models\Contracts\FilamentUser; //Pour Filament Admin
+use Filament\Panel; // Pour Filament Admin
 class User extends Authenticatable
 {
     /**
@@ -81,21 +81,22 @@ class User extends Authenticatable
         return $this->hasOne(Etudiant::class);
     }
 
-    /**
-     * Relation : un utilisateur peut être UN formateur
-     * Table users → table formateurs
-     */
-    public function formateur()
+    public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasOne(Formateur::class);
+        // Seul le rôle 'admin' (Directeur) peut accéder au dashboard
+        return $this->fonction === 'admin' && $this->is_active;
     }
 
-    /**
-     * Relation : un utilisateur peut être UN membre de l'administration
-     * Table users → table administrations
-     */
-    public function administration()
+    public function getNameAttribute(): string
     {
-        return $this->hasOne(Administration::class);
+        // On vérifie d'abord si la relation administration existe
+        if ($this->administration) {
+            return "{$this->administration->prenom} {$this->administration->nom}";
+        }
+
+        // Fallback (sécurité) : si ce n'est pas un admin, on affiche l'email
+        return $this->email;
     }
+    
+
 }
