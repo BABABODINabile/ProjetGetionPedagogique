@@ -1,11 +1,25 @@
 <?php
 
+/**
+ * Namespace : indique que cette classe appartient au dossier App\Models
+ * Tous les modèles Laravel sont dans ce namespace
+ */
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+/**
+ * Importation des classes nécessaires au fonctionnement du modèle
+ */
+
+// Permet de créer des données de test (factories)
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+// Classe de base pour l'authentification (login, logout, session)
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
+// Permet l'envoi de notifications (mail, base de données, etc.)
 use Illuminate\Notifications\Notifiable;
+
+// Permet l'authentification via API (tokens, Sanctum)
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Etudiant;
 use App\Models\Administration;
@@ -14,12 +28,17 @@ use Filament\Models\Contracts\FilamentUser; //Pour Filament Admin
 use Filament\Panel; // Pour Filament Admin
 class User extends Authenticatable
 {
+    /**
+     * Traits utilisés par le modèle
+     */
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Les champs autorisés à l'insertion ou à la mise à jour
+     * (protection contre les attaques de type "mass assignment")
      *
-     * @var array<int, string>
+     * Exemple :
+     * User::create([...]) n'acceptera QUE ces champs
      */
     protected $fillable = [
         'email',
@@ -29,9 +48,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Champs cachés lors de la conversion en JSON ou tableau
+     * (API, retour AJAX, debug)
      */
     protected $hidden = [
         'password',
@@ -39,18 +57,29 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Conversion automatique des champs
+     * Laravel transforme les valeurs de la base en types PHP
      */
     protected $casts = [
+        // Convertit automatiquement en objet DateTime
         'email_verified_at' => 'datetime',
+
+        // Hash automatiquement le mot de passe (Laravel 10+)
         'password' => 'hashed',
     ];
 
-    public function etudiant() { return $this->hasOne(Etudiant::class); }
-    public function formateur() { return $this->hasOne(Formateur::class); }
-    public function administration() { return $this->hasOne(Administration::class); }
+    /**
+     * RELATIONS ELOQUENT
+     */
+
+    /**
+     * Relation : un utilisateur peut être UN étudiant
+     * Table users → table etudiants
+     */
+    public function etudiant()
+    {
+        return $this->hasOne(Etudiant::class);
+    }
 
     public function canAccessPanel(Panel $panel): bool
     {
