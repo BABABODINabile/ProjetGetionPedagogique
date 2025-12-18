@@ -14,6 +14,7 @@ class EspacePolicy
     public function viewAny(User $user): bool
     {
         //
+        return $user->role === 'admin';
     }
 
     /**
@@ -22,6 +23,7 @@ class EspacePolicy
     public function view(User $user, Espace $espace): bool
     {
         //
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,6 +32,7 @@ class EspacePolicy
     public function create(User $user): bool
     {
         //
+        return $user->role === 'admin';
     }
 
     /**
@@ -38,6 +41,7 @@ class EspacePolicy
     public function update(User $user, Espace $espace): bool
     {
         //
+        return $user->role === 'admin';
     }
 
     /**
@@ -46,6 +50,7 @@ class EspacePolicy
     public function delete(User $user, Espace $espace): bool
     {
         //
+        return $user->role === 'admin';
     }
 
     /**
@@ -54,6 +59,7 @@ class EspacePolicy
     public function restore(User $user, Espace $espace): bool
     {
         //
+        return $user->role === 'admin';
     }
 
     /**
@@ -62,5 +68,6 @@ class EspacePolicy
     public function forceDelete(User $user, Espace $espace): bool
     {
         //
+        return $user->role === 'admin';
     }
 }
