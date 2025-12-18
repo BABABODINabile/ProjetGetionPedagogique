@@ -2,65 +2,121 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePromotionRequest;
-use App\Http\Requests\UpdatePromotionRequest;
 use App\Models\Promotion;
+use Illuminate\Http\Request;
 
 class PromotionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Affiche la liste des promotions.
+     * 
+     * URL : GET /promotions
+     * Route : promotions.index
      */
     public function index()
     {
-        //
+        // Récupère toutes les promotions depuis la base de données
+        $promotions = Promotion::all();
+
+        // Envoie les données à la vue resources/views/promotions/index.blade.php
+        return view('promotions.index', compact('promotions'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Affiche le formulaire de création d’une promotion.
+     * 
+     * URL : GET /promotions/create
+     * Route : promotions.create
      */
     public function create()
     {
-        //
+        // Affiche simplement le formulaire
+        return view('promotions.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Enregistre une nouvelle promotion en base de données.
+     * 
+     * URL : POST /promotions
+     * Route : promotions.store
      */
-    public function store(StorePromotionRequest $request)
+    public function store(Request $request)
     {
-        //
+        // Validation des données envoyées par le formulaire
+        $request->validate([
+            'libelle' => 'required|string|max:255',
+        ]);
+
+        // Création de la promotion (Mass Assignment sécurisé par $fillable)
+        Promotion::create([
+            'libelle' => $request->libelle,
+        ]);
+
+        // Redirection vers la liste avec un message de succès
+        return redirect()->route('promotions.index')
+            ->with('success', 'Promotion ajoutée avec succès');
     }
 
     /**
-     * Display the specified resource.
+     * Affiche une promotion spécifique.
+     * 
+     * URL : GET /promotions/{promotion}
+     * Route : promotions.show
      */
     public function show(Promotion $promotion)
     {
-        //
+        // Affiche les détails d’une promotion
+        return view('promotions.show', compact('promotion'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Affiche le formulaire d’édition d’une promotion.
+     * 
+     * URL : GET /promotions/{promotion}/edit
+     * Route : promotions.edit
      */
     public function edit(Promotion $promotion)
     {
-        //
+        // Envoie la promotion à modifier à la vue
+        return view('promotions.edit', compact('promotion'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Met à jour une promotion existante.
+     * 
+     * URL : PUT /promotions/{promotion}
+     * Route : promotions.update
      */
-    public function update(UpdatePromotionRequest $request, Promotion $promotion)
+    public function update(Request $request, Promotion $promotion)
     {
-        //
+        // Validation des données
+        $request->validate([
+            'libelle' => 'required|string|max:255',
+        ]);
+
+        // Mise à jour de la promotion
+        $promotion->update([
+            'libelle' => $request->libelle,
+        ]);
+
+        // Redirection vers la liste
+        return redirect()->route('promotions.index')
+            ->with('success', 'Promotion modifiée avec succès');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime une promotion.
+     * 
+     * URL : DELETE /promotions/{promotion}
+     * Route : promotions.destroy
      */
     public function destroy(Promotion $promotion)
     {
-        //
+        // Suppression de la promotion
+        $promotion->delete();
+
+        // Redirection vers la liste
+        return redirect()->route('promotions.index')
+            ->with('success', 'Promotion supprimée avec succès');
     }
 }
