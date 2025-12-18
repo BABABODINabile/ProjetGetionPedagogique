@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Formateur extends Model
 {
     use HasFactory;
+
+    /**
+     * Les attributs qui sont assignables en masse.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'nom',
+        'prenom',
+        'telephone',
+        'specialite'
+    ];
 }

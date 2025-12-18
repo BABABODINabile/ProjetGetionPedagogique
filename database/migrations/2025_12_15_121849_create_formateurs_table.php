@@ -16,8 +16,7 @@ return new class extends Migration
         $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
         $table->string('nom');
         $table->string('prenom');
-        $table->string('email')->nullable();
-        $table->string('password')->nullable();
+        $table->string('telephone')->nullable();
         $table->string('specialite');
     });
 
