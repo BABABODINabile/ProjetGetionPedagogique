@@ -28,9 +28,18 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasFactory;
-    
-    public $timestamps = false;
+    /**
+     * Traits utilisés par le modèle
+     */
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * Les champs autorisés à l'insertion ou à la mise à jour
+     * (protection contre les attaques de type "mass assignment")
+     *
+     * Exemple :
+     * User::create([...]) n'acceptera QUE ces champs
+     */
     protected $fillable = [
         'nom',
         'prenom',
