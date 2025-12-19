@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('email')->unique();
         $table->string('password');
-        $table->enum('role', ['etudiant', 'formateur', 'admin']);
+        $table->enum('role', ['ETUDIANT', 'FORMATEUR', 'ADMIN']);
         $table->boolean('isblocked')->default(false);
         $table->boolean('is_active')->default(true);
         $table->timestamps();
