@@ -16,7 +16,7 @@ return new class extends Migration
         $table->string('titre');
         $table->text('consigne');
         $table->enum('type', ['individuel', 'collectif']);
-        $table->foreignId('espace_pedagogique_id')->constrained();
+        $table->foreignId('espace_id')->constrained('espaces')->onDelete('cascade');
     });
     }
 
