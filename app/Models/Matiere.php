@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Matiere extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'libelle',
+    ];
+
+    public function formateurs()
+    {
+        return $this->belongsToMany(Formateur::class);
+    }
+
+    public function espaces()
+    {
+        return $this->hasMany(Espace::class);
+    }
 }
