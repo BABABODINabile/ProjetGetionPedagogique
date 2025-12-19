@@ -8,20 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Formateur extends Model
 {
     use HasFactory;
-    
+
+    /**
+     * Les attributs qui sont assignables en masse.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'user_id',
-        'specialite',
         'nom',
         'prenom',
-        'email',
-        'password'
+        'telephone',
+        'specialite'
     ];
-    public function matieres() {
-        return $this->belongsToMany(Matiere::class);
-    }
-
-    public function espaces() {
-        return $this->hasMany(Espace::class);
-    }
 }

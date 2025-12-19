@@ -11,7 +11,9 @@ class StoreFormateurRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Autoriser tout le monde à créer un compte formateur
+        // Pour une version plus sécurisée, vous pouvez vérifier si l'utilisateur est admin :
+        // return auth()->check() && auth()->user()->role === 'ADMIN';
     }
 
     /**
@@ -22,7 +24,12 @@ class StoreFormateurRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'telephone' => 'nullable|string|max:20',
+            'specialite' => 'required|string|max:255',
         ];
     }
 }

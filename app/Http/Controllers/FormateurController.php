@@ -19,9 +19,12 @@ class FormateurController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        //
+        return view('formateurs.create');
     }
 
     /**
@@ -29,7 +32,34 @@ class FormateurController extends Controller
      */
     public function store(StoreFormateurRequest $request)
     {
-        //
+        try {
+            // Création de l'utilisateur
+            $user = \App\Models\User::create([
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role' => 'FORMATEUR',
+                'is_active' => true
+            ]);
+
+            // Création du profil formateur associé
+            $formateur = $user->formateur()->create([
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'telephone' => $request->telephone,
+                'specialite' => $request->specialite,
+                // Ajoutez d'autres champs spécifiques au formateur si nécessaire
+            ]);
+
+            // Redirection avec un message de succès
+            return redirect()->route('formateurs.create')
+                ->with('success', 'Le compte formateur a été créé avec succès !');
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erreur lors de la création du compte formateur',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
